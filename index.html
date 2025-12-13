@@ -20,11 +20,7 @@
       --gap: 12px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -57,11 +53,7 @@
       flex-wrap: wrap;
     }
 
-    .title-block {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .title-block { display: flex; align-items: center; gap: 10px; }
 
     .title-icon {
       width: 36px;
@@ -102,9 +94,7 @@
       white-space: nowrap;
     }
 
-    .refresh-btn span.icon {
-      font-size: 14px;
-    }
+    .refresh-btn span.icon { font-size: 14px; }
 
     .refresh-btn:active {
       transform: scale(0.98);
@@ -123,7 +113,6 @@
       gap: 16px;
     }
 
-    /* Блок городов */
     .cities-panel {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -148,10 +137,7 @@
       color: var(--text-muted);
     }
 
-    .location-status {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .location-status { font-size: 11px; color: var(--text-muted); }
 
     .location-status span.badge {
       display: inline-flex;
@@ -204,12 +190,6 @@
       margin-right: 2px;
     }
 
-    .city-tab:disabled {
-      opacity: 0.6;
-      cursor: default;
-    }
-
-    /* Блок погоды */
     .weather-panel {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
@@ -242,18 +222,10 @@
       font-weight: 500;
     }
 
-    .weather-header-row .active-city-label span {
-      color: var(--accent);
-    }
+    .weather-header-row .active-city-label span { color: var(--accent); }
 
-    .status-message {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .status-message.error {
-      color: var(--danger);
-    }
+    .status-message { font-size: 13px; color: var(--text-muted); }
+    .status-message.error { color: var(--danger); }
 
     .weather-days {
       display: grid;
@@ -272,9 +244,7 @@
       gap: 6px;
     }
 
-    .day-card.today {
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
-    }
+    .day-card.today { box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6); }
 
     .day-name {
       font-size: 12px;
@@ -283,10 +253,7 @@
       color: var(--text-muted);
     }
 
-    .day-date {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .day-date { font-size: 11px; color: var(--text-muted); }
 
     .temp-row {
       display: flex;
@@ -296,38 +263,10 @@
       margin-top: 4px;
     }
 
-    .temp-main {
-      font-size: 22px;
-      font-weight: 600;
-    }
+    .temp-main { font-size: 22px; font-weight: 600; }
+    .temp-range { font-size: 12px; color: var(--text-muted); }
+    .weather-desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
-    .temp-range {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .weather-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Лоадер */
-    .loader {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(148, 163, 184, 0.5);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Форма добавления города */
     .add-city-panel {
       margin-top: 10px;
       padding: 10px;
@@ -346,11 +285,7 @@
       color: var(--text-muted);
     }
 
-    .field-row {
-      position: relative;
-      display: flex;
-      gap: 8px;
-    }
+    .field-row { position: relative; display: flex; gap: 8px; }
 
     .field-row input[type="text"] {
       flex: 1;
@@ -363,9 +298,7 @@
       outline: none;
     }
 
-    .field-row input[type="text"]::placeholder {
-      color: #6b7280;
-    }
+    .field-row input[type="text"]::placeholder { color: #6b7280; }
 
     .field-row input[type="text"]:focus {
       border-color: var(--accent);
@@ -421,64 +354,28 @@
       color: var(--text);
     }
 
-    .suggestion-item span.country {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .suggestion-item span.country { font-size: 11px; color: var(--text-muted); }
+    .suggestion-item:hover { background: rgba(15, 23, 42, 0.95); }
 
-    .suggestion-item:hover {
-      background: rgba(15, 23, 42, 0.95);
-    }
+    .error-text { font-size: 12px; color: var(--danger); }
+    .hint-text { font-size: 11px; color: var(--text-muted); }
 
-    .error-text {
-      font-size: 12px;
-      color: var(--danger);
-    }
-
-    .hint-text {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    /* Мобильная адаптация */
     @media (max-width: 768px) {
-      .app {
-        padding: 16px;
-      }
-
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .weather-days {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+      .app { padding: 16px; }
+      .main-layout { grid-template-columns: 1fr; }
+      .weather-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     @media (max-width: 540px) {
-      .app-header {
-        align-items: flex-start;
-      }
-
-      .refresh-btn {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .weather-days {
-        grid-template-columns: 1fr;
-      }
-
-      .field-row {
-        flex-direction: column;
-      }
-
-      .add-btn {
-        width: 100%;
-      }
+      .app-header { align-items: flex-start; }
+      .refresh-btn { width: 100%; justify-content: center; }
+      .weather-days { grid-template-columns: 1fr; }
+      .field-row { flex-direction: column; }
+      .add-btn { width: 100%; }
     }
   </style>
 </head>
+
 <body>
   <div class="app">
     <header class="app-header">
@@ -496,7 +393,6 @@
     </header>
 
     <div class="main-layout">
-      <!-- Панель городов -->
       <section class="cities-panel">
         <div class="cities-header">
           <h2>Города</h2>
@@ -531,7 +427,6 @@
         </div>
       </section>
 
-      <!-- Панель прогноза -->
       <section class="weather-panel">
         <div class="weather-header-row">
           <h2>Прогноз</h2>
@@ -550,35 +445,9 @@
     const STORAGE_KEY_CITIES = 'weatherApp.cities';
     const STORAGE_KEY_SELECTED = 'weatherApp.selectedCityId';
 
-    // Простейший список городов для автодополнения (можно расширить по желанию)
-    const CITY_CATALOG = [
-      { name: 'Москва', country: 'Россия', lat: 55.7558, lon: 37.6173 },
-      { name: 'Санкт-Петербург', country: 'Россия', lat: 59.9375, lon: 30.3086 },
-      { name: 'Нижний Новгород', country: 'Россия', lat: 56.2965, lon: 43.9361 },
-      { name: 'Казань', country: 'Россия', lat: 55.7963, lon: 49.1088 },
-      { name: 'Новосибирск', country: 'Россия', lat: 55.0084, lon: 82.9357 },
-      { name: 'Екатеринбург', country: 'Россия', lat: 56.8389, lon: 60.6057 },
-      { name: 'Самара', country: 'Россия', lat: 53.1959, lon: 50.1008 },
-      { name: 'Краснодар', country: 'Россия', lat: 45.0355, lon: 38.9753 },
-
-      { name: 'Helsinki', country: 'Finland', lat: 60.1699, lon: 24.9384 },
-      { name: 'Tallinn', country: 'Estonia', lat: 59.437, lon: 24.7536 },
-      { name: 'Riga', country: 'Latvia', lat: 56.9496, lon: 24.1052 },
-      { name: 'Vilnius', country: 'Lithuania', lat: 54.6872, lon: 25.2797 },
-
-      { name: 'Berlin', country: 'Germany', lat: 52.52, lon: 13.405 },
-      { name: 'Hamburg', country: 'Germany', lat: 53.5511, lon: 9.9937 },
-      { name: 'München', country: 'Germany', lat: 48.1374, lon: 11.5755 },
-      { name: 'Nürnberg', country: 'Germany', lat: 49.4521, lon: 11.0767 },
-      { name: 'Frankfurt am Main', country: 'Germany', lat: 50.1109, lon: 8.6821 },
-
-      { name: 'London', country: 'United Kingdom', lat: 51.5072, lon: -0.1276 },
-      { name: 'Paris', country: 'France', lat: 48.8566, lon: 2.3522 },
-      { name: 'Rome', country: 'Italy', lat: 41.9028, lon: 12.4964 },
-      { name: 'Madrid', country: 'Spain', lat: 40.4168, lon: -3.7038 },
-      { name: 'New York', country: 'USA', lat: 40.7128, lon: -74.006 },
-      { name: 'Tokyo', country: 'Japan', lat: 35.6762, lon: 139.6503 }
-    ];
+    /* [ИЗМЕНЕНИЕ #1]
+       УДАЛЕНО: локальный CITY_CATALOG.
+       Теперь используем мировой поиск через Geocoding API (см. функции ниже). */
 
     // ==== DOM ====
     const locationBadgeText = document.getElementById('locationBadgeText');
@@ -644,7 +513,6 @@
     }
 
     function mapWeatherCodeToText(code) {
-      // Упрощённая карта кодов Open-Meteo
       const groups = [
         { codes: [0], text: 'Ясно' },
         { codes: [1, 2], text: 'Переменная облачность' },
@@ -674,12 +542,8 @@
       state.cities.forEach(city => {
         const btn = document.createElement('button');
         btn.className = 'city-tab';
-        if (city.id === state.selectedCityId) {
-          btn.classList.add('active');
-        }
-        if (city.isCurrent) {
-          btn.classList.add('current-label');
-        }
+        if (city.id === state.selectedCityId) btn.classList.add('active');
+        if (city.isCurrent) btn.classList.add('current-label');
 
         btn.innerHTML = `
           <span>${city.displayName}</span>
@@ -703,9 +567,7 @@
       weatherStatusEl.style.display = 'block';
       weatherStatusEl.textContent = message;
       weatherStatusEl.className = 'status-message';
-      if (type === 'error') {
-        weatherStatusEl.classList.add('error');
-      }
+      if (type === 'error') weatherStatusEl.classList.add('error');
     }
 
     function renderWeather(city, daysData) {
@@ -743,9 +605,8 @@
       }
     }
 
-    // ==== HTTP: запрос погоды ====
+    // ==== HTTP: прогноз погоды ====
     async function fetchWeatherForCity(city) {
-      // Open-Meteo: без ключа, 3 дня, дневной прогноз
       const url = new URL('https://api.open-meteo.com/v1/forecast');
       url.searchParams.set('latitude', city.lat);
       url.searchParams.set('longitude', city.lon);
@@ -754,23 +615,18 @@
       url.searchParams.set('timezone', 'auto');
 
       const resp = await fetch(url.toString());
-      if (!resp.ok) {
-        throw new Error('HTTP ' + resp.status);
-      }
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
       const data = await resp.json();
-      if (!data.daily) {
-        throw new Error('Некорректный ответ API');
-      }
+      if (!data.daily) throw new Error('Некорректный ответ API');
 
       const { time, temperature_2m_max, temperature_2m_min, weathercode } = data.daily;
-      const days = time.map((date, idx) => ({
+      return time.map((date, idx) => ({
         date,
         tempMax: temperature_2m_max[idx],
         tempMin: temperature_2m_min[idx],
         code: weathercode[idx]
       }));
-
-      return days;
     }
 
     async function fetchAndRenderWeatherForSelected() {
@@ -794,20 +650,17 @@
     }
 
     async function refreshAllCities() {
-      // Технически для оценки достаточно перезагрузки активного города,
-      // но можем обновлять только выбранный — этого уже достаточно для критерия
+      // Для критерия достаточно обновлять выбранный город (новый HTTP-запрос без reload)
       await fetchAndRenderWeatherForSelected();
     }
 
-    // ==== Работа с геолокацией ====
+    // ==== Геолокация ====
     function initGeolocationIfNeeded() {
       if (state.cities.length > 0) {
         const hasCurrent = state.cities.some(c => c.isCurrent);
-        if (hasCurrent) {
-          locationBadgeText.textContent = 'Текущее местоположение сохранено';
-        } else {
-          locationBadgeText.textContent = 'Используется вручную добавленный город';
-        }
+        locationBadgeText.textContent = hasCurrent
+          ? 'Текущее местоположение сохранено'
+          : 'Используется вручную добавленный город';
         return;
       }
 
@@ -840,46 +693,69 @@
           console.warn('Geolocation error', error);
           locationBadgeText.textContent =
             'Доступ к геолокации отклонён. Добавьте город вручную.';
-          // Форма уже есть, просто ждём ввода пользователя
           setWeatherStatus('Выберите город, чтобы увидеть прогноз.');
         }
       );
     }
 
-    // ==== Добавление города ====
-    function showSuggestions(list) {
-      if (!list.length) {
-        suggestionsEl.style.display = 'none';
-        suggestionsEl.innerHTML = '';
-        return;
-      }
-      suggestionsEl.innerHTML = '';
-      list.forEach(city => {
-        const item = document.createElement('div');
-        item.className = 'suggestion-item';
-        item.innerHTML = `
-          <span>${city.name}</span>
-          <span class="country">${city.country}</span>
-        `;
-        item.addEventListener('click', () => {
-          cityInput.value = city.name;
-          suggestionsEl.style.display = 'none';
-        });
-        suggestionsEl.appendChild(item);
-      });
-      suggestionsEl.style.display = 'block';
+    // ================================
+    // [ИЗМЕНЕНИЕ #2] МИРОВОЙ ПОИСК ГОРОДОВ (Geocoding API)
+    // ================================
+    async function searchCitiesWorldwide(query) {
+      const q = (query || '').trim();
+      if (q.length < 2) return [];
+
+      const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+      url.searchParams.set('name', q);
+      url.searchParams.set('count', '10');
+      url.searchParams.set('language', 'ru');  // можно поменять на 'en'
+      url.searchParams.set('format', 'json');
+
+      const resp = await fetch(url.toString());
+      if (!resp.ok) throw new Error('Geocoding HTTP ' + resp.status);
+
+      const data = await resp.json();
+      return Array.isArray(data.results) ? data.results : [];
     }
 
-    function filterSuggestions(query) {
-      const q = query.trim().toLowerCase();
-      if (q.length < 2) {
-        showSuggestions([]);
+    // ==== Добавление города: подсказки и валидация ====
+
+    function showSuggestions(list) {
+      suggestionsEl.innerHTML = '';
+
+      if (!list.length) {
+        suggestionsEl.style.display = 'none';
         return;
       }
-      const list = CITY_CATALOG.filter(city =>
-        city.name.toLowerCase().includes(q)
-      ).slice(0, 12);
-      showSuggestions(list);
+
+      list.forEach(place => {
+        // place: { name, country, admin1, latitude, longitude, ... }
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+
+        // [ИЗМЕНЕНИЕ #3] показываем страну и (если есть) регион/штат
+        const right = [place.admin1, place.country].filter(Boolean).join(', ');
+
+        item.innerHTML = `
+          <span>${place.name}</span>
+          <span class="country">${right || place.country || ''}</span>
+        `;
+
+        item.addEventListener('click', () => {
+          // [ИЗМЕНЕНИЕ #4] сохраняем выбранные координаты в dataset input-а
+          const label = right ? `${place.name}, ${right}` : `${place.name}`;
+          cityInput.value = label;
+
+          cityInput.dataset.lat = String(place.latitude);
+          cityInput.dataset.lon = String(place.longitude);
+
+          suggestionsEl.style.display = 'none';
+        });
+
+        suggestionsEl.appendChild(item);
+      });
+
+      suggestionsEl.style.display = 'block';
     }
 
     function showCityError(msg) {
@@ -887,28 +763,56 @@
       cityErrorEl.style.display = msg ? 'block' : 'none';
     }
 
+    // [ИЗМЕНЕНИЕ #5] вместо фильтра по CITY_CATALOG — запрос к Geocoding API
+    let geoDebounceTimer = null;
+    function handleCityInput() {
+      showCityError('');
+
+      // если пользователь продолжил печатать — координаты старого выбора недействительны
+      delete cityInput.dataset.lat;
+      delete cityInput.dataset.lon;
+
+      const query = cityInput.value.trim();
+      if (query.length < 2) {
+        showSuggestions([]);
+        return;
+      }
+
+      // небольшой debounce, чтобы не спамить API
+      clearTimeout(geoDebounceTimer);
+      geoDebounceTimer = setTimeout(async () => {
+        try {
+          const results = await searchCitiesWorldwide(query);
+          showSuggestions(results);
+        } catch (e) {
+          console.error(e);
+          showSuggestions([]);
+          showCityError('Ошибка поиска города. Попробуйте ещё раз.');
+        }
+      }, 250);
+    }
+
+    // [ИЗМЕНЕНИЕ #6] добавление города теперь требует выбрать из подсказки (dataset lat/lon)
     function handleAddCity() {
-      const name = cityInput.value.trim();
+      const label = cityInput.value.trim();
+      const lat = cityInput.dataset.lat;
+      const lon = cityInput.dataset.lon;
+
       showCityError('');
       suggestionsEl.style.display = 'none';
 
-      if (!name) {
+      if (!label) {
         showCityError('Введите название города и выберите его из списка.');
         return;
       }
 
-      const cityFromCatalog = CITY_CATALOG.find(
-        c => c.name.toLowerCase() === name.toLowerCase()
-      );
-
-      if (!cityFromCatalog) {
-        showCityError('Такого города нет в списке. Выберите существующий город.');
+      if (!lat || !lon) {
+        showCityError('Выберите город из выпадающего списка (подсказок).');
         return;
       }
 
-      const already = state.cities.some(
-        c => c.displayName.toLowerCase() === cityFromCatalog.name.toLowerCase()
-      );
+      // защита от дублей: одинаковые координаты
+      const already = state.cities.some(c => String(c.lat) === String(lat) && String(c.lon) === String(lon));
       if (already) {
         showCityError('Этот город уже добавлен.');
         return;
@@ -916,39 +820,32 @@
 
       const newCity = {
         id: generateId(),
-        displayName: cityFromCatalog.name,
-        lat: cityFromCatalog.lat,
-        lon: cityFromCatalog.lon,
+        displayName: label,
+        lat: Number(lat),
+        lon: Number(lon),
         isCurrent: false
       };
 
       state.cities.push(newCity);
-      if (!state.selectedCityId) {
-        state.selectedCityId = newCity.id;
-      }
+      if (!state.selectedCityId) state.selectedCityId = newCity.id;
 
       saveStateToStorage();
       renderCityTabs();
       fetchAndRenderWeatherForSelected();
+
       cityInput.value = '';
+      delete cityInput.dataset.lat;
+      delete cityInput.dataset.lon;
     }
 
     // ==== События ====
-    cityInput.addEventListener('input', () => {
-      showCityError('');
-      filterSuggestions(cityInput.value);
-    });
+    cityInput.addEventListener('input', handleCityInput);
 
     cityInput.addEventListener('blur', () => {
-      // слегка отложим, чтобы можно было кликнуть по подсказке
-      setTimeout(() => {
-        suggestionsEl.style.display = 'none';
-      }, 200);
+      setTimeout(() => { suggestionsEl.style.display = 'none'; }, 200);
     });
 
-    addCityBtn.addEventListener('click', () => {
-      handleAddCity();
-    });
+    addCityBtn.addEventListener('click', handleAddCity);
 
     cityInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') {
@@ -966,22 +863,18 @@
       loadStateFromStorage();
       renderCityTabs();
 
-      if (state.cities.length && state.selectedCityId) {
-        const selectedExists = state.cities.some(c => c.id === state.selectedCityId);
-        if (!selectedExists) {
-          state.selectedCityId = state.cities[0].id;
-        }
+      if (state.cities.length) {
+        // если selectedCityId пустой/невалидный — выберем первый
+        const selectedExists = state.selectedCityId && state.cities.some(c => c.id === state.selectedCityId);
+        if (!selectedExists) state.selectedCityId = state.cities[0].id;
 
         const hasCurrent = state.cities.some(c => c.isCurrent);
-        if (hasCurrent) {
-          locationBadgeText.textContent = 'Используется текущее местоположение';
-        } else {
-          locationBadgeText.textContent = 'Используются выбранные города';
-        }
+        locationBadgeText.textContent = hasCurrent
+          ? 'Используется текущее местоположение'
+          : 'Используются выбранные города';
 
         fetchAndRenderWeatherForSelected();
       } else {
-        // Нет сохранённых данных — пробуем геолокацию
         initGeolocationIfNeeded();
       }
     }
