@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Прогноз погоды (v3)</title>
+  <title>Прогноз погоды (v4)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -10,11 +10,9 @@
       --text:#e5e7eb;
       --muted:#9ca3af;
       --accent:#38bdf8;
-      --danger:#f97373;
+      --danger:#fb7185;
       --card: rgba(17,24,39,0.82);
       --border: rgba(148,163,184,0.28);
-
-      /* Фон будет меняться через JS */
       --bg: radial-gradient(circle at top, #1f2937 0, #020617 55%);
     }
 
@@ -93,6 +91,23 @@
     .btn:active{transform:scale(.98)}
     .btn[disabled]{opacity:.6;cursor:default;box-shadow:none}
 
+    /* Кнопка вторичная (без фреймворков) */
+    .btnSecondary{
+      border:1px solid rgba(148,163,184,0.40);
+      border-radius:999px;
+      padding:9px 14px;
+      background: rgba(2,6,23,0.20);
+      color: var(--text);
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .btnSecondary:active{transform:scale(.99)}
+    .btnSecondary[disabled]{opacity:.6;cursor:default}
+
     .layout{
       display:grid;
       grid-template-columns: 2fr 1.1fr;
@@ -141,11 +156,18 @@
     }
     .geoLine span{color:var(--accent)}
 
+    .actionsRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
     .tabs{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin-top:6px;
+      margin-top:10px;
     }
 
     .tab{
@@ -174,13 +196,17 @@
       color: var(--accent);
     }
 
+    /*  FIX: форма скрыта по умолчанию и появляется при отказе гео или по кнопке */
     .formBox{
       margin-top:10px;
       padding:10px;
       border-radius:16px;
       background: rgba(2,6,23,0.70);
       border: 1px dashed rgba(148,163,184,0.40);
+      display:none; /* <-- FIX */
     }
+    .formBox.show{ display:block; } /* <-- FIX */
+
     .formBox h3{
       font-size:12px;
       color:var(--muted);
@@ -188,12 +214,14 @@
       letter-spacing:.08em;
       margin-bottom:8px;
     }
+
     .row{
       position:relative;
       display:flex;
       gap:8px;
       flex-wrap:wrap;
     }
+
     input[type="text"]{
       flex:1;
       min-width:220px;
@@ -317,6 +345,7 @@
       input[type="text"]{min-width:0;width:100%}
       .addBtn{width:100%}
       .row{flex-direction:column}
+      .actionsRow button{width:100%}
     }
   </style>
 </head>
@@ -346,9 +375,16 @@
           </div>
         </div>
 
+        <!--FIX: кнопки управления -->
+        <div class="actionsRow">
+          <button id="toggleFormBtn" class="btnSecondary">➕ Добавить город</button>
+          <button id="reGeoBtn" class="btnSecondary">📍 Определить заново</button>
+        </div>
+
         <div class="tabs" id="tabs"></div>
 
-        <div class="formBox">
+        <!--  FIX: форма по умолчанию скрыта, показываем только при отказе или по кнопке -->
+        <div class="formBox" id="formBox">
           <h3>Добавить город</h3>
           <div class="row">
             <input id="cityInput" type="text" placeholder="Начните вводить город…" autocomplete="off" />
@@ -373,15 +409,12 @@
   </div>
 
   <script>
-    // =========================
-    // 0) Хранилище и состояние
-    // =========================
-    const KEY_CITIES = 'wx.cities.v3';
-    const KEY_SELECTED = 'wx.selected.v3';
 
-    /** city object:
-     * { id, name, lat, lon, isCurrent }
-     */
+    // 0) Хранилище и состояние
+   
+    const KEY_CITIES = 'wx.cities.v4';
+    const KEY_SELECTED = 'wx.selected.v4';
+
     const state = {
       cities: [],
       selectedId: null,
@@ -394,6 +427,10 @@
       geoLine: document.getElementById('geoLine'),
       geoName: document.getElementById('geoName'),
       tabs: document.getElementById('tabs'),
+
+      toggleFormBtn: document.getElementById('toggleFormBtn'),
+      reGeoBtn: document.getElementById('reGeoBtn'),
+      formBox: document.getElementById('formBox'),
 
       input: document.getElementById('cityInput'),
       addBtn: document.getElementById('addBtn'),
@@ -427,9 +464,16 @@
       return 'c_' + Math.random().toString(36).slice(2, 10);
     }
 
-    // =========================
-    // 1) Геокодинг (поиск) + Reverse (коорд -> город)
-    // =========================
+   
+    //FIX: управление видимостью формы
+ 
+    function showForm() { el.formBox.classList.add('show'); }
+    function hideForm() { el.formBox.classList.remove('show'); }
+    function toggleForm() { el.formBox.classList.toggle('show'); }
+
+
+    // 1) Геокодинг + Reverse
+ 
     async function geocodeSearch(query) {
       const q = (query || '').trim();
       if (q.length < 2) return [];
@@ -463,9 +507,9 @@
       return parts.join(', ');
     }
 
-    // =========================
-    // 2) Погода (Open-Meteo) + фон
-    // =========================
+ 
+    // 2) Погода + фон
+  
     function wxText(code) {
       const map = [
         { codes:[0], text:'Ясно' },
@@ -484,7 +528,6 @@
     }
 
     function setBg(code){
-      // Сделано максимально заметно
       let bg;
       if (code === 0) bg = 'radial-gradient(circle at 20% 15%, rgba(250,204,21,0.42), rgba(2,6,23,0.72)), linear-gradient(180deg,#0b1223,#020617)';
       else if ([1,2,3].includes(code)) bg = 'radial-gradient(circle at 30% 15%, rgba(148,163,184,0.36), rgba(2,6,23,0.78)), linear-gradient(180deg,#0b1223,#020617)';
@@ -502,7 +545,7 @@
       url.searchParams.set('latitude', String(lat));
       url.searchParams.set('longitude', String(lon));
       url.searchParams.set('daily', 'weathercode,temperature_2m_max,temperature_2m_min');
-      url.searchParams.set('forecast_days', '3');
+      url.searchParams.set('forecast_days', '3'); //  сегодня + 2 дня
       url.searchParams.set('timezone', 'auto');
 
       const r = await fetch(url.toString());
@@ -522,17 +565,15 @@
     function dayName(dateStr, idx){
       if (idx===0) return 'Сегодня';
       if (idx===1) return 'Завтра';
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('ru-RU',{weekday:'short'});
+      return new Date(dateStr).toLocaleDateString('ru-RU',{weekday:'short'});
     }
     function dayDate(dateStr){
-      const d = new Date(dateStr);
-      return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
+      return new Date(dateStr).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
     }
 
-    // =========================
+ 
     // 3) UI
-    // =========================
+
     function setErr(msg){
       el.err.textContent = msg || '';
       el.err.style.display = msg ? 'block' : 'none';
@@ -597,9 +638,9 @@
       }
     }
 
-    // =========================
-    // 4) Главная логика: выбранный город
-    // =========================
+  
+    // 4) Погода по выбранному городу
+   
     async function loadAndRenderSelected(){
       const c = state.cities.find(x => x.id === state.selectedId);
       if (!c){
@@ -612,35 +653,29 @@
       try{
         const days = await fetchWeather(c.lat, c.lon);
         renderDays(c.name, days);
-
-        // Фон по сегодняшней погоде (очень заметно)
         setBg(days[0]?.code ?? 0);
-
       }catch(e){
         console.error(e);
-        setStatus('Ошибка загрузки прогноза. Попробуйте ещё раз.', 'error');
+        setStatus('Ошибка загрузки прогноза. Проверьте интернет и попробуйте ещё раз.', 'error');
       }finally{
         setLoading(false);
       }
     }
 
-    // =========================
-    // 5) Геолокация: всегда получаем НАЗВАНИЕ города
-    // =========================
+   
+    // 5) Геолокация и имя города
+    
     async function ensureCurrentCityName(){
       const current = state.cities.find(x => x.isCurrent);
       if (!current) return;
 
-      // Показываем пользователю найденный город
       el.geoLine.style.display = 'none';
-
       try{
         const name = await reverseCity(current.lat, current.lon);
         if (name){
-          current.name = name;          // ОБНОВЛЯЕМ имя
+          current.name = name;
           save();
           renderTabs();
-
           el.geoName.textContent = name;
           el.geoLine.style.display = 'block';
         }
@@ -653,6 +688,7 @@
       if (!navigator.geolocation){
         el.badgeText.textContent = '📍 Геолокация не поддерживается';
         setStatus('Добавьте город вручную.');
+        showForm(); // FIX: если нет гео — сразу показываем форму
         return;
       }
 
@@ -663,7 +699,6 @@
         async (pos)=>{
           const { latitude, longitude } = pos.coords;
 
-          // Сначала создаём/обновляем current
           let current = state.cities.find(x => x.isCurrent);
           if (!current){
             current = { id: uid(), name: 'Текущее местоположение', lat: latitude, lon: longitude, isCurrent: true };
@@ -673,19 +708,17 @@
             current.lon = longitude;
           }
 
-          // Выбираем current
           state.selectedId = current.id;
           save();
           renderTabs();
 
-          // Затем получаем реальное имя города
+          // Получаем реальное имя города
           try{
             const nm = await reverseCity(latitude, longitude);
             if (nm){
               current.name = nm;
               save();
               renderTabs();
-
               el.geoName.textContent = nm;
               el.geoLine.style.display = 'block';
             }
@@ -694,6 +727,7 @@
           }
 
           el.badgeText.textContent = '📍 Используется текущее местоположение';
+          hideForm(); // FIX: при успешной гео можно скрыть форму
           loadAndRenderSelected();
         },
         (err)=>{
@@ -701,14 +735,15 @@
           el.badgeText.textContent = '📍 Доступ к геолокации отклонён';
           el.geoLine.style.display = 'none';
           setStatus('Добавьте город вручную.');
+          showForm(); //  FIX: форма появляется при отказе гео
         },
         { enableHighAccuracy:true, timeout: 10000, maximumAge: 60000 }
       );
     }
 
-    // =========================
-    // 6) Добавление городов мира (autocomplete)
-    // =========================
+    
+    // 6) Autocomplete + добавление городов
+    
     let debounce = null;
     function hideSug(){ el.sug.style.display = 'none'; el.sug.innerHTML = ''; }
     function showSug(items){
@@ -781,16 +816,15 @@
       delete el.input.dataset.lon;
     }
 
-    // =========================
+   
     // 7) INIT
-    // =========================
+   
     function init(){
       load();
       renderTabs();
 
-      // Если уже есть сохранённый current — ОБЯЗАТЕЛЬНО обновим имя города
+      // если есть сохранённые города — восстановим
       if (state.cities.length){
-        // исправляем selected если сломан
         if (!state.selectedId || !state.cities.some(c=>c.id===state.selectedId)){
           state.selectedId = state.cities[0].id;
           save();
@@ -801,21 +835,28 @@
           ? '📍 Используется текущее местоположение'
           : '📍 Используются выбранные города';
 
-        // Важно: обновить имя города по координатам, если есть current
+        // обновить имя текущего местоположения по координатам
         ensureCurrentCityName();
+
+        // форму по умолчанию скрываем (появится по кнопке или при отказе гео)
+        hideForm();
 
         loadAndRenderSelected();
       } else {
-        // Первый запуск — просим геолокацию
-        requestGeolocation();
+        // первый запуск — просим гео
+        hideForm();          //  FIX: сначала скрыто
+        requestGeolocation();//  FIX: при отказе покажем
       }
     }
 
     // События
-    el.refreshBtn.addEventListener('click', ()=>{
-      // Обновить: если есть current — можно обновить координаты тоже
-      // но чтобы не раздражать запросом разрешения, просто перезапросим погоду
-      loadAndRenderSelected();
+    el.refreshBtn.addEventListener('click', ()=> loadAndRenderSelected());
+
+    el.toggleFormBtn.addEventListener('click', ()=> toggleForm());
+
+    el.reGeoBtn.addEventListener('click', ()=>{
+      // не reload, а новый запрос геолокации
+      requestGeolocation();
     });
 
     el.input.addEventListener('input', onInput);
